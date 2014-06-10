@@ -1,4 +1,4 @@
-package provide vlc 0.0.1
+package provide vlc 0.0.2
 
 namespace eval ::vlc {
     variable command
@@ -15,17 +15,17 @@ namespace eval ::vlc {
     }
 }
 
-proc ::vlc::open {parent} {
+proc ::vlc::start {parent} {
     variable command
-    set fd [::open "| $command [winfo id $parent]" WRONLY]
+    set fd [open "| $command [winfo id $parent]" WRONLY]
     fconfigure $fd -buffering line
-    bind $parent <Destroy> "::vlc::close $fd"
+    bind $parent <Destroy> "::vlc::shutdown $fd"
     return $fd
 }
 
-proc ::vlc::close {fd} {
+proc ::vlc::shutdown {fd} {
     catch {
-        puts $fd quit
+        puts $fd shutdown
         close $fd
     }
 }
