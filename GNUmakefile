@@ -1,10 +1,10 @@
-VSN = $(shell head -n 1 vlc.tcl | cut -d ' ' -f 4)
+VSN = $(shell head -n 1 mplayer.tcl | cut -d ' ' -f 4)
 
 GEN_SCRIPTS = pkgIndex.tcl
-SCRIPTS = $(GEN_SCRIPTS) vlc.tcl
+SCRIPTS = $(GEN_SCRIPTS) mplayer.tcl
 
 DESTDIR ?= /usr/local/share/tcltk
-PREFIX = $(DESTDIR)/vlc$(VSN)
+PREFIX = $(DESTDIR)/mplayer$(VSN)
 
 .PHONY: all clean install
 .SUFFIXES: .tcl .tcl.in
@@ -20,8 +20,8 @@ install: all
 		install -m 664 $$SCRIPT $(PREFIX)/$$SCRIPT; \
 	done
 
-pkgIndex.tcl: vlc.tcl
-	echo 'pkg_mkIndex .' | tclsh
+pkgIndex.tcl: mplayer.tcl
+	echo "pkg_mkIndex . $^" | tclsh
 
 .tcl.in.tcl:
 	sed -e 's,<<VSN>>,$(VSN),g' $< > $@
